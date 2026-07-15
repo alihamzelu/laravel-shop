@@ -18,17 +18,20 @@
             border-color: #0ea5e9;
             background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
         }
-        
+
         .custom-scrollbar::-webkit-scrollbar {
             width: 4px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-track {
             background: #0b0c10;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #1f2937;
             border-radius: 2px;
         }
+
         .custom-scrollbar::-webkit-scrollbar-thumb:hover {
             background: #0ea5e9;
         }
@@ -165,65 +168,109 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-6">
 
                 @forelse($products as $product)
-                <div class="bg-[#12141c] border border-gray-800 rounded-xl overflow-hidden group hover:border-sky-500/50 transition duration-300 flex flex-col relative shadow-xl">
+                <div class="w-full bg-[#12141c] rounded-xl border border-gray-800/80 shadow-lg overflow-hidden hover:shadow-[0_0_30px_rgba(56,189,248,0.08)] hover:border-sky-500/30 transition-all duration-300 flex flex-col justify-between group relative">
 
-                    <div class="h-48 bg-[#0b0c10] flex items-center justify-center relative overflow-hidden p-4">
-                        {{-- ✅ Check if deal is active --}}
+                    <div class="relative bg-[#0b0c10] p-4 flex items-center justify-center h-52 overflow-hidden">
+                        @if($product->image)
+                        <img src="{{ asset('storage/' . $product->image) }}"
+                            alt="{{ $product->name }}"
+                            class="max-h-full max-w-full object-contain mx-auto group-hover:scale-105 transition duration-500">
+                        @else
+                        <div class="flex flex-col items-center justify-center text-gray-600 group-hover:text-sky-500/20 transition duration-500">
+                            <svg class="w-12 h-12 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+                            </svg>
+                            <span class="text-[10px] uppercase tracking-widest font-mono">No Image</span>
+                        </div>
+                        @endif
+
                         @if($product->hasActiveDeal())
-                        <span class="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider z-10 shadow-lg shadow-red-500/20">
-                            Sale -{{ $product->discount_percent }}%
+                        <span class="absolute top-3 left-3 bg-red-500 text-white font-black text-[10px] px-3 py-1 rounded-full uppercase tracking-wider z-10 shadow-lg shadow-red-500/20">
+                            -{{ $product->discount_percent }}% OFF
                         </span>
                         @endif
 
-                        @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->name }}" class="h-full w-full object-contain group-hover:scale-105 transition duration-500">
-                        @else
-                        <svg class="w-16 h-16 text-gray-800 group-hover:scale-110 group-hover:text-sky-500/20 transition duration-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
-                        </svg>
-                        @endif
-                    </div>
-
-                    <div class="p-5 flex flex-col flex-grow">
-                        <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider mb-1">
-                            {{ $product->category->name ?? 'Uncategorized' }}
-                        </p>
-
-                        <a href="{{ route('products.show', $product->slug) }}" class="text-white font-semibold text-base hover:text-sky-400 transition line-clamp-2 mb-4 h-12">
-                            {{ $product->name }}
-                        </a>
-
-                        <div class="mt-auto flex items-center justify-between pt-4 border-t border-gray-800/80">
-                            <div class="flex flex-col">
-                                {{-- ✅ اگه deal فعال است --}}
-                                @if($product->hasActiveDeal())
-                                <span class="text-xs text-gray-500 line-through mb-0.5">${{ number_format($product->price, 2) }}</span>
-                                @endif
-                                <span class="text-lg font-black text-white">
-                                    ${{ number_format($product->final_price, 2) }}
-                                </span>
-                            </div>
-
-                            {{-- ✅ Add to Cart - Form --}}
-                            <form action="{{ route('cart.add', $product) }}" method="POST" class="inline">
+                        <div class="absolute top-3 right-3 z-20">
+                            @auth
+                            @php
+                            $isWishlisted = auth()->user()->wishlistProducts()->where('product_id', $product->id)->exists();
+                            @endphp
+                            <form action="{{ route('wishlist.toggle', $product) }}" method="POST">
                                 @csrf
-                                <input type="hidden" name="quantity" value="1">
-                                <button type="submit" class="w-10 h-10 rounded-full bg-sky-500/10 border border-sky-500/30 text-sky-400 hover:bg-sky-500 hover:text-black flex items-center justify-center transition duration-300 shadow-md">
-                                    <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <button type="submit" class="h-8 w-8 rounded-full bg-[#0b0c10]/80 border flex items-center justify-center transition duration-200 focus:outline-none {{ $isWishlisted ? 'text-red-500 border-red-500/20 bg-red-500/10' : 'text-gray-400 border-gray-800 hover:text-red-400 hover:bg-red-500/5' }}">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="{{ $isWishlisted ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                     </svg>
                                 </button>
                             </form>
+                            @else
+                            <a href="{{ route('login') }}" class="h-8 w-8 rounded-full bg-[#0b0c10]/80 border border-gray-800 flex items-center justify-center text-gray-400 hover:text-red-400 transition">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                                </svg>
+                            </a>
+                            @endauth
                         </div>
+                    </div>
+
+                    <div class="p-5 flex flex-col justify-between flex-grow">
+                        <div class="mb-4">
+                            <p class="text-[10px] text-sky-400 font-bold uppercase tracking-wider mb-1">
+                                {{ $product->category->name ?? 'Uncategorized' }}
+                            </p>
+                            <a href="{{ route('products.show', $product->slug) }}">
+                                <h3 class="text-sm font-bold text-white tracking-tight hover:text-sky-400 transition duration-300 line-clamp-2 min-h-[40px]">
+                                    {{ $product->name }}
+                                </h3>
+                            </a>
+                            <p class="text-[11px] text-gray-500 mt-1 uppercase tracking-wider font-mono">
+                                {{ $product->brand->name ?? 'Premium Gear' }}
+                            </p>
+                        </div>
+
+                        <div class="flex justify-between items-center mb-5">
+                            <div class="space-y-0.5">
+                                <p class="text-lg font-black text-white">
+                                    ${{ number_format($product->final_price, 2) }}
+                                </p>
+                                @if($product->hasActiveDeal())
+                                <p class="text-xs text-gray-500 line-through">
+                                    ${{ number_format($product->price, 2) }}
+                                </p>
+                                @endif
+                            </div>
+
+                            @php
+                            $rating = $product->reviews->avg('rating') ?: 0;
+                            $fullStars = floor($rating);
+                            $emptyStars = 5 - $fullStars;
+                            @endphp
+                            <div class="flex items-center gap-0.5">
+                                <div class="text-yellow-400 flex text-xs">
+                                    {!! str_repeat('★', $fullStars) !!}
+                                </div>
+                                <div class="text-gray-700 flex text-xs">
+                                    {!! str_repeat('★', $emptyStars) !!}
+                                </div>
+                                <span class="text-[10px] text-gray-500 ml-1">({{ $product->reviews->count() }})</span>
+                            </div>
+                        </div>
+
+                        <form action="{{ route('cart.add', $product) }}" method="POST" class="w-full">
+                            @csrf
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="w-full bg-gray-800/80 hover:bg-sky-500 hover:text-black text-gray-300 hover:shadow-lg hover:shadow-sky-500/10 font-bold py-3 rounded-lg text-xs transition-all duration-300 tracking-wider uppercase flex items-center justify-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+                                </svg>
+                                Deploy to Cart
+                            </button>
+                        </form>
                     </div>
                 </div>
                 @empty
-                <div class="col-span-full bg-[#12141c] border border-gray-800 rounded-xl p-12 text-center">
-                    <svg class="w-16 h-16 text-gray-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    <h3 class="text-base font-bold text-white mb-1">No Products Match Your Criteria</h3>
-                    <p class="text-xs text-gray-500">Try adjusting your active matrix filters or search queries.</p>
+                <div class="col-span-full py-12 text-center text-gray-500 border border-dashed border-gray-800 rounded-xl">
+                    No products found in this category.
                 </div>
                 @endforelse
 

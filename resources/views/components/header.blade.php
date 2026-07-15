@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-    {{-- ✅ Alpine.js اضافه کن --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
 <body>
@@ -43,7 +42,6 @@
                 Brands
             </a>
 
-            {{-- ✅ Deals route اضافه کن یا اگه نیست اونو comment کن --}}
             @if(Route::has('deals.index'))
                 <a href="{{ route('deals.index') }}"
                     class="{{ request()->routeIs('deals.index') ? 'text-sky-400' : 'text-gray-400 hover:text-white' }} transition">
@@ -51,26 +49,17 @@
                 </a>
             @endif
 
-            <a href="{{ route('contact.index') }}"
-                class="{{ request()->routeIs('contact.index') ? 'text-sky-400' : 'text-gray-400 hover:text-white' }} transition">
-                Contact
-            </a>
         </nav>
 
 
         <div class="flex items-center space-x-4 sm:space-x-6">
-            <button class="text-gray-400 hover:text-sky-400 transition">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
+
 
             <a href="{{ route('cart.index') }}">
                 <button class="relative text-gray-400 hover:text-sky-400 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
-                    {{-- ✅ Dynamic cart counter --}}
                     @if(Auth::check() && Auth::user()->cart && Auth::user()->cart->items->count() > 0)
                         <span class="absolute -top-2 -right-2 bg-sky-500 text-black font-bold text-xs w-4 h-4 rounded-full flex items-center justify-center">
                             {{ Auth::user()->cart->items->count() }}

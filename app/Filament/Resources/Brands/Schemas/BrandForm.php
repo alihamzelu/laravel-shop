@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Brands\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Filament\Schemas\Schema;
@@ -14,12 +15,20 @@ class BrandForm
             ->components([
                 TextInput::make('name')
                     ->required(),
+
                 TextInput::make('slug')
                     ->required(),
-                TextInput::make('logo')
-                    ->default(null),
+
+                FileUpload::make('logo')
+                    ->label('Brand Logo')
+                    ->image()
+                    ->disk('public')
+                    ->directory('brands')
+                    ->imageEditor(),
+
                 Toggle::make('status')
-                    ->required(),
+                    ->required()
+                    ->default(true),
             ]);
     }
 }

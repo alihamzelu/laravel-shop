@@ -16,29 +16,43 @@ class ProductForm
             ->components([
                 TextInput::make('name')
                     ->required(),
+
                 Textarea::make('description')
                     ->default(null)
                     ->columnSpanFull(),
+
                 TextInput::make('price')
                     ->required()
                     ->numeric()
                     ->prefix('$'),
+
                 TextInput::make('stock')
                     ->required()
                     ->numeric()
                     ->default(0),
+
                 FileUpload::make('image')
-                    ->image(),
+                    ->label('Product Image')
+                    ->image()
+                    ->disk('public')
+                    ->directory('products')
+                    ->imageEditor()
+                    ->required(),
+
                 TextInput::make('category_id')
                     ->required()
                     ->numeric(),
-                Toggle::make('is_active')
-                    ->required(),
-                TextInput::make('slug')
-                    ->required(),
+
                 TextInput::make('brand_id')
                     ->numeric()
                     ->default(null),
+
+                Toggle::make('is_active')
+                    ->required()
+                    ->default(true),
+
+                TextInput::make('slug')
+                    ->required(),
             ]);
     }
 }

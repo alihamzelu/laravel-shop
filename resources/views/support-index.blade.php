@@ -21,12 +21,10 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Aside Navigation Sidebar --}}
             <aside class="w-full lg:w-1/4">
                 @include('components.dashboard-aside')
             </aside>
 
-            {{-- Main Support Hub --}}
             <div class="w-full lg:w-3/4 space-y-6">
                 <div>
                     <h1 class="text-2xl font-black text-white uppercase tracking-tight">Support Terminal</h1>
@@ -41,7 +39,6 @@
 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
 
-                    {{-- Form: Open Ticket --}}
                     <div class="xl:col-span-5 bg-[#12141c] border border-gray-800 rounded-lg p-5">
                         <h2 class="text-xs font-black uppercase tracking-wider text-white mb-4 pb-2 border-b border-gray-800">Initialize Ticket</h2>
 
@@ -75,7 +72,6 @@
                         </form>
                     </div>
 
-                    {{-- List: Active Tickets --}}
                     <div class="xl:col-span-7 bg-[#12141c] border border-gray-800 rounded-lg p-5">
                         <h2 class="text-xs font-black uppercase tracking-wider text-white mb-4 pb-2 border-b border-gray-800">Active Transmission Logs</h2>
 

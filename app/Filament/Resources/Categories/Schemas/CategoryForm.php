@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Categories\Schemas;
 
+use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
 
@@ -13,8 +14,16 @@ class CategoryForm
             ->components([
                 TextInput::make('name')
                     ->required(),
+
                 TextInput::make('slug')
                     ->required(),
+
+                FileUpload::make('image')
+                    ->label('Category Image')
+                    ->image()
+                    ->directory('categories')
+                    ->imageEditor()
+                    ->disk('public'),
             ]);
     }
 }

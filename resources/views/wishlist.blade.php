@@ -33,33 +33,27 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 @include('components.dashboard-aside')
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-6">
 
-                {{-- Header Section --}}
                 <div>
                     <h1 class="text-2xl font-black text-white uppercase tracking-tight">Saved Configurations</h1>
                     <p class="text-xs text-gray-500">Your personal wishlist network. Monitor stock availability and deploy to cart instantly.</p>
                 </div>
 
-                {{-- Success Message --}}
                 @if ($message = Session::get('success'))
                     <div class="bg-green-500/10 border border-green-500/30 rounded-lg p-4 text-green-400 text-sm animate-pulse">
                         {{ $message }}
                     </div>
                 @endif
 
-                {{-- Wishlist Grid --}}
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     @forelse ($wishlists as $wishlist)
                         <div class="bg-[#12141c] border border-gray-800 rounded-xl overflow-hidden group hover:border-sky-500/30 transition duration-300 flex flex-col relative">
                             
-                            {{-- Remove from Wishlist Button --}}
                             <form action="{{ route('wishlist.toggle', $wishlist->product) }}" method="POST" class="absolute top-3 right-3 z-10">
                                 @csrf
                                 <button type="submit" class="w-7 h-7 bg-[#0b0c10]/80 hover:bg-red-500/20 text-gray-400 hover:text-red-400 rounded-md border border-gray-800 hover:border-red-500/30 flex items-center justify-center transition duration-200">
@@ -69,7 +63,6 @@
                                 </button>
                             </form>
 
-                            {{-- Product Image --}}
                             <div class="h-40 bg-[#0b0c10] flex items-center justify-center p-4 relative overflow-hidden">
                                 @if($wishlist->product->image)
                                     <img src="{{ asset('storage/'.$wishlist->product->image) }}" alt="{{ $wishlist->product->name }}" class="h-full w-full object-contain group-hover:scale-105 transition duration-500">
@@ -80,7 +73,6 @@
                                 @endif
                             </div>
 
-                            {{-- Product Info --}}
                             <div class="p-4 flex flex-col flex-grow">
                                 <span class="text-[9px] text-sky-400 font-bold uppercase tracking-wider mb-1">
                                     {{ $wishlist->product->category->name ?? 'Hardware' }}
@@ -90,28 +82,16 @@
                                     {{ $wishlist->product->name }}
                                 </a>
 
-                                {{-- Price & Deploy Button --}}
                                 <div class="mt-auto pt-3 border-t border-gray-800/60 flex items-center justify-between">
                                     <span class="text-sm font-black text-white font-mono">
                                         ${{ number_format($wishlist->product->price, 2) }}
                                     </span>
 
-                                    <form action="{{ route('cart.add', $wishlist->product) }}" method="POST">
-                                        @csrf
-                                        <input type="hidden" name="product_id" value="{{ $wishlist->product->id }}">
-                                        <button type="submit" class="h-8 px-3 bg-sky-500/10 border border-sky-500/20 text-sky-400 hover:bg-sky-500 hover:text-black font-bold text-[10px] uppercase rounded transition duration-200 flex items-center space-x-1 tracking-wider">
-                                            <svg class="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                                            </svg>
-                                            <span>Deploy</span>
-                                        </button>
-                                    </form>
                                 </div>
                             </div>
 
                         </div>
                     @empty
-                        {{-- Empty State --}}
                         <div class="col-span-full bg-[#12141c] border border-gray-800 rounded-xl p-16 text-center">
                             <svg class="w-10 h-10 text-gray-700 mx-auto mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
@@ -125,18 +105,15 @@
                     @endforelse
                 </div>
 
-                {{-- Pagination --}}
                 @if($wishlists->hasPages())
                     <div class="mt-8 flex justify-center">
                         <div class="flex items-center space-x-2">
-                            {{-- Previous Page Link --}}
                             @if ($wishlists->onFirstPage())
                                 <span class="px-3 py-2 text-xs text-gray-600 bg-gray-800/50 rounded border border-gray-800">← Previous</span>
                             @else
                                 <a href="{{ $wishlists->previousPageUrl() }}" class="px-3 py-2 text-xs text-gray-400 hover:text-white bg-gray-800/50 hover:bg-sky-500/20 rounded border border-gray-800 hover:border-sky-500/30 transition">← Previous</a>
                             @endif
 
-                            {{-- Pagination Elements --}}
                             @foreach ($wishlists->getUrlRange(1, $wishlists->lastPage()) as $page => $url)
                                 @if ($page == $wishlists->currentPage())
                                     <span class="px-3 py-2 text-xs font-bold text-sky-400 bg-sky-500/20 rounded border border-sky-500/30">{{ $page }}</span>
@@ -145,7 +122,6 @@
                                 @endif
                             @endforeach
 
-                            {{-- Next Page Link --}}
                             @if ($wishlists->hasMorePages())
                                 <a href="{{ $wishlists->nextPageUrl() }}" class="px-3 py-2 text-xs text-gray-400 hover:text-white bg-gray-800/50 hover:bg-sky-500/20 rounded border border-gray-800 hover:border-sky-500/30 transition">Next →</a>
                             @else

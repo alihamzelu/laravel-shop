@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Order #{{ $order->id }} Details | Tech World</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -33,7 +33,6 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 <div class="bg-[#12141c] border border-gray-800 rounded-xl p-5 space-y-6">
 
@@ -51,7 +50,6 @@
                         <a href="{{ route('dashboard') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md text-gray-400 hover:bg-[#161922]/50 hover:text-white transition">
                             <span>📊</span> <span>Dashboard Overview</span>
                         </a>
-                        {{-- اختصاص کلاس Active منو به سفارشات برای UX بهتر --}}
                         <a href="{{ route('orders') }}" class="flex items-center space-x-3 px-4 py-2.5 rounded-md bg-[#161922] text-white font-semibold transition">
                             <span>📦</span> <span>My Orders</span>
                         </a>
@@ -65,7 +63,6 @@
                             <span>🎫</span> <span>Support Tickets</span>
                         </a>
 
-                        {{-- Safe Logout Form --}}
                         <a href="{{ route('logout') }}"
                             onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                             class="flex items-center space-x-3 px-4 py-2.5 rounded-md text-red-400 hover:bg-red-500/10 transition pt-4 border-t border-gray-800/60 mt-4">
@@ -79,7 +76,6 @@
                 </div>
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-6">
 
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
@@ -108,7 +104,6 @@
                     </div>
                 </div>
 
-                {{-- کارت خلاصه اطلاعات و وضعیت فاکتور --}}
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5 grid grid-cols-2 sm:grid-cols-4 gap-6 text-xs">
                     <div>
                         <span class="block text-gray-500 uppercase font-bold tracking-wider text-[10px] mb-1">Timestamp</span>
@@ -116,7 +111,6 @@
                     </div>
                     <div>
                         <span class="block text-gray-500 uppercase font-bold tracking-wider text-[10px] mb-1">Node Status</span>
-                        {{-- مدیریت هوشمند رنگ وضعیت‌ها شامل پردازش در سیستم --}}
                         @if($order->status === 'success' || $order->status === 'paid' || $order->status === 'completed')
                         <span class="text-emerald-400 font-bold uppercase tracking-wide text-[10px] bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/20 rounded">● {{ $order->status }}</span>
                         @elseif($order->status === 'processing')
@@ -137,7 +131,6 @@
                     </div>
                 </div>
 
-                {{-- جدول اقلام فاکتور --}}
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5">
                     <h2 class="text-sm font-black uppercase tracking-wider text-white mb-4 pb-2 border-b border-gray-800">Manifest Elements</h2>
 
@@ -154,7 +147,6 @@
                             <tbody class="text-gray-300 divide-y divide-gray-800/40">
                                 @foreach($order->items as $item)
                                 <tr>
-                                    {{-- اطلاعات و تصویر کالا --}}
                                     <td class="py-4 flex items-center space-x-3">
                                         <div class="w-10 h-10 bg-[#0b0c10] border border-gray-800 rounded flex items-center justify-center p-1 flex-shrink-0">
                                             @if($item->product->image)
@@ -169,13 +161,10 @@
                                         </div>
                                     </td>
 
-                                    {{-- قیمت واحد --}}
                                     <td class="py-4 font-mono">${{ number_format($item->price, 2) }}</td>
 
-                                    {{-- تعداد --}}
                                     <td class="py-4 font-mono text-center text-gray-400">{{ $item->quantity }}</td>
 
-                                    {{-- قیمت کل ردیف --}}
                                     <td class="py-4 font-mono text-right text-white font-semibold">${{ number_format($item->price * $item->quantity, 2) }}</td>
                                 </tr>
                                 @endforeach

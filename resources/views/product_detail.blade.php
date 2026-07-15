@@ -8,8 +8,8 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;900&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
 
     <style>
         body {
@@ -28,7 +28,6 @@
     <main class="container mx-auto px-4 py-8">
 
 
-        <!-- Breadcrumb -->
         <nav class="text-sm text-gray-500 mb-8 flex items-center space-x-2">
 
             <a href="{{ route('home') }}" class="hover:text-sky-400 transition">
@@ -55,7 +54,6 @@
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
 
 
-            <!-- Product Image -->
 
             <div>
 
@@ -86,7 +84,6 @@
 
 
 
-            <!-- Product Info -->
 
             <div class="flex flex-col justify-between">
 
@@ -142,7 +139,6 @@
 
 
 
-                    <!-- Price -->
 
                     <div class="mb-6">
 
@@ -179,7 +175,6 @@
 
 
 
-                    <!-- Description -->
 
                     <p class="text-gray-400 leading-relaxed mb-8 break-words whitespace-normal overflow-hidden">
                         {!! $product->description !!}
@@ -189,7 +184,6 @@
 
                 </div>
 
-                <!-- Actions Area (Add To Cart & Wishlist Toggle) -->
 
                 <div class="border-t border-gray-800 pt-6">
                     <div class="flex flex-col sm:flex-row gap-4 items-stretch">
@@ -197,7 +191,6 @@
                         <form action="{{ route('cart.add', $product) }}" method="POST" class="flex-1 flex flex-col sm:flex-row gap-4">
                             @csrf
 
-                            <!-- Quantity -->
                             <div class="flex items-center justify-between sm:justify-start border border-gray-700 bg-[#12141c] rounded-md h-14 flex-shrink-0">
                                 <button type="button"
                                     onclick="this.nextElementSibling.stepDown()"
@@ -219,7 +212,6 @@
                                 </button>
                             </div>
 
-                            <!-- Cart Button -->
                             <button type="submit"
                                 class="flex-1 bg-sky-500 hover:bg-sky-600 text-black font-extrabold uppercase tracking-wider h-14 rounded-md transition flex items-center justify-center gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -267,7 +259,6 @@
 
 
 
-        <!-- Basic Product Information -->
 
         <section class="mb-16">
 
@@ -379,7 +370,142 @@
 
 
         </section>
+        <section class="mb-16 border-t border-gray-800 pt-12">
+            <h2 class="text-xl font-black uppercase tracking-wider text-white mb-8 flex items-center gap-3">
+                <span>Customer Reviews</span>
+                <span class="text-xs bg-sky-500/10 text-sky-400 px-2.5 py-1 rounded-full">
+                    {{ $product->reviews->count() }} {{ Str::plural('Review', $product->reviews->count()) }}
+                </span>
+            </h2>
 
+            @if(session('success'))
+            <div class="mb-6 p-4 bg-green-500/10 border border-green-500/20 text-green-400 rounded-lg text-sm">
+                {{ session('success') }}
+            </div>
+            @endif
+            @if(session('error'))
+            <div class="mb-6 p-4 bg-red-500/10 border border-red-500/20 text-red-400 rounded-lg text-sm">
+                {{ session('error') }}
+            </div>
+            @endif
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+
+                <div class="lg:col-span-2 space-y-6">
+                    @forelse($product->reviews as $review)
+                    <div class="bg-[#12141c] border border-gray-800 rounded-xl p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-full bg-sky-500/10 flex items-center justify-center text-sky-400 font-bold border border-sky-500/20">
+                                    {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                                </div>
+                                <div>
+                                    <h4 class="text-sm font-bold text-white">{{ $review->user->name }}</h4>
+                                    <p class="text-xs text-gray-500">
+                                        {{ $review->created_at ? $review->created_at->diffForHumans() : 'Recently' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center gap-1 text-amber-400">
+                                @for($i = 1; $i <= 5; $i++)
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="{{ $i <= $review->rating ? 'currentColor' : 'none' }}" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                    </svg>
+                                    @endfor
+                            </div>
+                        </div>
+                        <p class="text-gray-300 text-sm leading-relaxed">{{ $review->comment }}</p>
+                    </div>
+                    @empty
+                    <div class="bg-[#12141c]/50 border border-dashed border-gray-800 rounded-xl p-12 text-center text-gray-500">
+                        No reviews yet. Be the first to review this product!
+                    </div>
+                    @endforelse
+                </div>
+
+                <div>
+                    @auth
+                    <div class="bg-[#12141c] border border-gray-800 rounded-xl p-6 sticky top-6">
+                        <h3 class="text-lg font-bold text-white mb-4">Write a Review</h3>
+
+                        <form action="{{ route('products.reviews.store', $product) }}" method="POST" class="space-y-4">
+                            @csrf
+
+                            <div>
+                                <label class="block text-xs text-gray-500 uppercase mb-2">Your Rating</label>
+                                <div class="flex items-center gap-2" id="star-rating-container">
+                                    @for($i = 1; $i <= 5; $i++)
+                                        <button type="button" data-rating="{{ $i }}" class="star-btn text-gray-600 hover:text-amber-400 transition-colors">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                                        </svg>
+                                        </button>
+                                        @endfor
+                                </div>
+                                <input type="hidden" name="rating" id="rating-input" value="" required>
+                                @error('rating')
+                                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <div>
+                                <label for="comment" class="block text-xs text-gray-500 uppercase mb-2">Your Comment</label>
+                                <textarea name="comment" id="comment" rows="4"
+                                    class="w-full bg-[#0b0c10] border border-gray-700 rounded-md p-3 text-white text-sm focus:outline-none focus:border-sky-500 transition placeholder-gray-600"
+                                    placeholder="Share your thoughts about this product..." required>{{ old('comment') }}</textarea>
+                                @error('comment')
+                                <p class="text-xs text-red-500 mt-1">{{ $message }}</p>
+                                @enderror
+                            </div>
+
+                            <button type="submit" class="w-full bg-sky-500 hover:bg-sky-600 text-black font-extrabold uppercase tracking-wider py-3.5 rounded-md transition text-sm">
+                                Submit Review
+                            </button>
+                        </form>
+                    </div>
+                    @else
+                    <div class="bg-[#12141c] border border-gray-800 rounded-xl p-8 text-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-gray-600 mx-auto mb-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <p class="text-gray-400 text-sm mb-4">You need to be logged in to write a review.</p>
+                        <a href="{{ route('login') }}" class="inline-block bg-gray-800 hover:bg-gray-700 text-white font-bold px-6 py-2.5 rounded-md transition text-sm">
+                            Login Now
+                        </a>
+                    </div>
+                    @endauth
+                </div>
+
+            </div>
+        </section>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const stars = document.querySelectorAll('.star-btn');
+                const ratingInput = document.getElementById('rating-input');
+
+                stars.forEach(star => {
+                    star.addEventListener('click', function() {
+                        const rating = this.getAttribute('data-rating');
+                        ratingInput.value = rating;
+
+                        stars.forEach(s => {
+                            const sRating = s.getAttribute('data-rating');
+                            if (sRating <= rating) {
+                                s.classList.remove('text-gray-600');
+                                s.classList.add('text-amber-400');
+                                s.querySelector('svg').setAttribute('fill', 'currentColor');
+                            } else {
+                                s.classList.remove('text-amber-400');
+                                s.classList.add('text-gray-600');
+                                s.querySelector('svg').setAttribute('fill', 'none');
+                            }
+                        });
+                    });
+                });
+            });
+        </script>
     </main>
     @include('components.footer')
 </body>

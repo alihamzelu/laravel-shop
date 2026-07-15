@@ -9,14 +9,15 @@ use App\Filament\Resources\Deals\Schemas\DealForm;
 use App\Filament\Resources\Deals\Tables\DealsTable;
 use App\Models\Deal;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\BaseResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 use UnitEnum;
 
-class DealResource extends Resource
+class DealResource extends BaseResource
 {
+    protected static string $permissionPrefix = 'deals';
     protected static ?string $model = Deal::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;

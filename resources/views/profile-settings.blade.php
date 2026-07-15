@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account Settings | Tech World</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght=300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
@@ -33,13 +33,11 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 @include('components.dashboard-aside')
 
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-8">
 
                 <div>
@@ -47,7 +45,6 @@
                     <p class="text-xs text-gray-500">Update your account credentials, security node information, and email address.</p>
                 </div>
 
-                {{-- اعلان موفقیت‌آمیز بودن عملیات لاراول --}}
                 @if (session('status') === 'profile-updated' || session('status') === 'password-updated')
                 <div class="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-4 rounded-xl text-xs font-semibold flex items-center space-x-2">
                     <span>✓</span> <span>System parameters updated successfully inside the core network.</span>
@@ -56,7 +53,6 @@
 
                 <div class="grid grid-cols-1 gap-8">
 
-                    {{-- فرم اول: اطلاعات پروفایل --}}
                     <div class="bg-[#12141c] border border-gray-800 rounded-lg p-6">
                         <div class="mb-6 pb-2 border-b border-gray-800">
                             <h2 class="text-sm font-black uppercase tracking-wider text-white">Profile Information</h2>
@@ -93,7 +89,6 @@
                         </form>
                     </div>
 
-                    {{-- فرم دوم: تغییر رمز عبور --}}
                     <div class="bg-[#12141c] border border-gray-800 rounded-lg p-6">
                         <div class="mb-6 pb-2 border-b border-gray-800">
                             <h2 class="text-sm font-black uppercase tracking-wider text-white">Update Password</h2>

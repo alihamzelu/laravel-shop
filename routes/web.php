@@ -65,26 +65,21 @@ Route::middleware('auth')->group(function () {
     Route::post('/wishlist/{product}', [WishlistController::class, 'toggle'])
         ->name('wishlist.toggle');
 
-    // Cart Routes
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
     Route::put('/cart/update/{item}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/remove/{item}', [CartController::class, 'remove'])->name('cart.remove');
 
-    // Checkout Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
 
-    // Payment Routes (Dynamic)
     Route::get('/payment/{order}', [PaymentController::class, 'index'])->name('payment.index');
     Route::post('/payment/{order}/zarinpal', [PaymentController::class, 'zarinpal'])->name('payment.zarinpal');
 
-    // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->middleware('verified')
         ->name('dashboard');
@@ -100,8 +95,9 @@ Route::middleware('auth')->group(function () {
         ->middleware('auth')
         ->name('accountsettings');
 
+    Route::post('/products/{product}/reviews', [ProductsController::class, 'storeReview'])
+        ->name('products.reviews.store');
 
-    // Order Success
     Route::get('/order/success/{order}', function (Order $order) {
         if ($order->user_id !== auth()->id()) {
             abort(403, 'Unauthorized');

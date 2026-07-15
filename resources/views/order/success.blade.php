@@ -16,7 +16,6 @@
 
     <main class="container mx-auto px-4 py-12 max-w-2xl">
         
-        {{-- Success Message --}}
         <div class="bg-[#12141c] border border-gray-800 rounded-lg p-8 text-center space-y-6 mb-8">
             <div class="w-16 h-16 rounded-full bg-green-500/10 border border-green-500 mx-auto flex items-center justify-center">
                 <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -44,7 +43,6 @@
             </div>
         </div>
 
-        {{-- Order Items --}}
         <div class="bg-[#12141c] border border-gray-800 rounded-lg p-6 mb-8">
             <h2 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Order Items</h2>
             
@@ -63,7 +61,6 @@
             </div>
         </div>
 
-        {{-- Next Steps --}}
         <div class="bg-[#12141c] border border-gray-800 rounded-lg p-6 mb-8">
             <h2 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">What's Next?</h2>
             
@@ -83,7 +80,6 @@
             </div>
         </div>
 
-        {{-- Action Buttons --}}
         <div class="flex gap-4">
             <a href="{{ route('home') }}" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg text-center transition">
                 Continue Shopping

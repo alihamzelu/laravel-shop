@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Review;
 
 class ProductsController extends Controller
 {
@@ -15,7 +16,6 @@ class ProductsController extends Controller
         $query = Product::query();
 
 
-        // Search
         if ($request->filled('search')) {
 
             $search = $request->search;
@@ -29,7 +29,6 @@ class ProductsController extends Controller
 
 
 
-        // Category Filter
         if ($request->filled('category')) {
 
             $query->whereIn('category_id', $request->category);
@@ -37,7 +36,6 @@ class ProductsController extends Controller
 
 
 
-        // Brand Filter
         if ($request->filled('brand')) {
 
             $query->whereIn('brand_id', $request->brand);
@@ -45,7 +43,6 @@ class ProductsController extends Controller
 
 
 
-        // Minimum Price
         if ($request->filled('min_price')) {
 
             $query->where('price', '>=', $request->min_price);
@@ -53,7 +50,6 @@ class ProductsController extends Controller
 
 
 
-        // Maximum Price
         if ($request->filled('max_price')) {
 
             $query->where('price', '<=', $request->max_price);
@@ -61,7 +57,6 @@ class ProductsController extends Controller
 
 
 
-        // Sorting
         switch ($request->sort) {
 
             case 'price_asc':
@@ -104,16 +99,17 @@ class ProductsController extends Controller
         ));
     }
 
+
     public function show(Product $product)
     {
         $product->load([
             'category',
             'brand',
-            'deal'
+            'deal',
+            'reviews.user'
         ]);
 
         $categories = Category::all();
-
         $brands = Brand::all();
 
         $relatedProducts = Product::with(['category', 'brand'])
@@ -130,4 +126,25 @@ class ProductsController extends Controller
             'relatedProducts'
         ));
     }
+
+    public function storeReview(Request $request, Product $product)
+    {
+        $request->validate([
+            'rating' => 'required|integer|min:1|max:5',
+            'comment' => 'required|string|min:5|max:1000',
+        ]);
+
+        if (!auth()->check()) {
+            return back()->with('error', 'You must be logged in to leave a review.');
+        }
+
+        $product->reviews()->create([
+            'user_id' => auth()->id(),
+            'rating' => $request->rating,
+            'comment' => $request->comment,
+        ]);
+
+        return back()->with('success', 'Your review has been submitted successfully!');
+    }
 }
+

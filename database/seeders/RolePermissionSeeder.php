@@ -46,6 +46,16 @@ class RolePermissionSeeder extends Seeder
 
             // Reports
             'reports.view',
+            'payments.view',
+            'payments.create',
+            'payments.edit',
+            'payments.delete',
+
+            // Support Tickets
+            'support-tickets.view',
+            'support-tickets.create',
+            'support-tickets.edit',
+            'support-tickets.delete',
         ];
 
 
@@ -88,6 +98,8 @@ class RolePermissionSeeder extends Seeder
             'categories.create',
             'categories.edit',
             'categories.delete',
+
+
 
             'brands.view',
             'brands.create',

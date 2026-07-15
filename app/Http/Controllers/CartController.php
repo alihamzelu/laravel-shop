@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Cart;  // ✅ درست
-use App\Models\Cart_item;  // ✅ درست (اسم کلاس)
+use App\Models\Cart;
+use App\Models\Cart_item;
 use App\Models\Product;
 
 class CartController extends Controller
@@ -76,7 +76,6 @@ class CartController extends Controller
 
     public function update(Request $request, cart_item $item)
     {
-        // ✅ Security: Check if item belongs to authenticated user
         if ($item->cart->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action');
         }
@@ -87,7 +86,6 @@ class CartController extends Controller
 
         $quantity = $request->quantity;
 
-        // ✅ Check stock
         if ($item->product->stock < $quantity) {
             return redirect()
                 ->back()
@@ -106,7 +104,6 @@ class CartController extends Controller
 
     public function remove(cart_item $item)
     {
-        // ✅ Security: Check if item belongs to authenticated user
         if ($item->cart->user_id !== auth()->id()) {
             abort(403, 'Unauthorized action');
         }

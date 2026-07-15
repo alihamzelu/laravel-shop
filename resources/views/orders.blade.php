@@ -33,13 +33,11 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 @include('components.dashboard-aside')
 
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-6">
 
                 <div>
@@ -47,18 +45,15 @@
                     <p class="text-xs text-gray-500">Manage and track all your processed hardware deployments and configurations.</p>
                 </div>
 
-                {{-- Stats Card --}}
                 <div class="w-full">
                     <div class="bg-[#12141c] border border-gray-800 p-5 rounded-lg max-w-sm">
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Total Orders Placed</span>
                         <div class="text-3xl font-black text-white mt-2">
-                            {{-- مدیریت شمارش کل بر اساس نوع دریافت متغیر (Collection یا LengthAwarePaginator) --}}
                             {{ method_exists($orders, 'total') ? $orders->total() : $orders->count() }}
                         </div>
                     </div>
                 </div>
 
-                {{-- All Orders Table --}}
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5">
                     <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-800">
                         <h2 class="text-sm font-black uppercase tracking-wider text-white">All Orders</h2>
@@ -82,7 +77,6 @@
                                     <td class="py-4">{{ $order->created_at->format('M d, Y') }}</td>
                                     <td class="py-4 font-mono">${{ number_format($order->total_price, 2) }}</td>
                                     <td class="py-4">
-                                        {{-- مدیریت هوشمند رنگ وضعیت سفارشات بر اساس فیلد status --}}
                                         @if($order->status === 'success' || $order->status === 'paid' || $order->status === 'completed')
                                         <span class="bg-green-500/10 text-green-400 font-bold px-2 py-0.5 rounded border border-green-500/20 uppercase tracking-wide text-[10px]">
                                             {{ $order->status }}
@@ -120,7 +114,6 @@
                         </table>
                     </div>
 
-                    {{-- پجینیشن پیشرفته لاراول با حفظ استایل تیره --}}
                     @if(method_exists($orders, 'hasPages') && $orders->hasPages())
                     <div class="mt-6 pt-4 border-t border-gray-800/40">
                         {{ $orders->links() }}

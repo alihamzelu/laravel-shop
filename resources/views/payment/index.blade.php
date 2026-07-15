@@ -18,14 +18,12 @@
 
     @include('components.header')
     <div class="container mx-auto max-w-2xl mt-4 px-4">
-        {{-- نمایش خطاهای متنی کنترلر --}}
         @if (session('error'))
         <div class="bg-red-500/20 border border-red-500 text-red-400 p-4 rounded mb-4 text-center">
             {{ session('error') }}
         </div>
         @endif
 
-        {{-- نمایش خطاهای ولیدیشن یا موارد دیگر --}}
         @if ($errors->any())
         <div class="bg-red-500/20 border border-red-500 text-red-400 p-4 rounded mb-4">
             <ul class="list-disc list-inside">
@@ -42,7 +40,6 @@
 
         <div class="bg-[#12141c] border border-gray-800 rounded-lg p-8 space-y-8">
 
-            {{-- Order Details --}}
             <div class="bg-[#0b0c10] border border-gray-800 rounded-lg p-6">
                 <h2 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Order Details</h2>
 
@@ -62,7 +59,6 @@
                 </div>
             </div>
 
-            {{-- Items List --}}
             <div>
                 <h2 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Order Items</h2>
 
@@ -81,7 +77,6 @@
                 </div>
             </div>
 
-            {{-- Payment Method --}}
             <div class="bg-[#0b0c10] border border-gray-800 rounded-lg p-6">
                 <h2 class="text-lg font-bold text-white mb-4 uppercase tracking-wider">Payment Method</h2>
 
@@ -101,7 +96,6 @@
                 </div>
             </div>
 
-            {{-- Action Buttons --}}
             <div class="flex gap-4">
                 <a href="{{ route('cart.index') }}" class="flex-1 bg-gray-800 hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg text-center transition">
                     ← Cancel
@@ -114,7 +108,6 @@
                 </form>
             </div>
 
-            {{-- Security Note --}}
             <p class="text-xs text-center text-gray-500 border-t border-gray-800 pt-6">
                 🔐 Your payment information is encrypted and secure. We use industry-standard SSL encryption.
             </p>

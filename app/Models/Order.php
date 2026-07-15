@@ -23,7 +23,7 @@ class Order extends Model
 
     public function items()
     {
-        return $this->hasMany(Order_item::class);  // ✅ Order_item
+        return $this->hasMany(Order_item::class);
     }
 
     public function payment()

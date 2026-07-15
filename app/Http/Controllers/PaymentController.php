@@ -15,7 +15,6 @@ class PaymentController extends Controller
             abort(403, 'Unauthorized');
         }
 
-        // پیدا کردن رکورد پرداختی که در مرحله checkout ایجاد شده بود
         $payment = $order->payments()->first() ?? (object) [
             'method' => 'zarinpal',
             'amount' => $order->total_price
@@ -33,7 +32,6 @@ class PaymentController extends Controller
         $amount = (int) preg_replace('/[^0-9.]/', '', $order->total_price);
         if ($amount < 1000) { $amount = 1000; }
 
-        // 👈 به جای create جدید، رکورد ایجاد شده در مرحله checkout را پیدا میکنیم
         $payment = $order->payments()->firstOrCreate(
             ['status' => 'pending'],
             ['amount' => $amount, 'method' => 'zarinpal']
@@ -69,7 +67,6 @@ class PaymentController extends Controller
         }
 
         $payment->update(['status' => 'failed']);
-        dd('زرین‌پال آتوریتی صادر نکرد:', $result);
     }
 
     public function callback(Request $request)
@@ -77,7 +74,6 @@ class PaymentController extends Controller
         $authority = $request->query('Authority');
         $status = $request->query('Status');
 
-        // ۱. پیدا کردن رکورد پرداخت بر اساس آتوریتی برگشتی از زرین‌پال
         $payment = Payment::where('authority', $authority)->first();
 
         if (!$payment) {
@@ -85,24 +81,21 @@ class PaymentController extends Controller
         }
 
         if ($status === 'OK') {
-            // ۲. آپدیت جدول payments به وضعیت موفقیت‌آمیز
             $payment->update([
                 'status' => 'success',
                 'paid_at' => now()
             ]);
 
-            // ۳. آپدیت جدول orders به وضعیت پردازش یا پرداخت شده (از حالت کامنت خارج شد)
             $order = $payment->order;
             if ($order) {
                 $order->update([
-                    'status' => 'processing' // یا 'paid' بر اساس استراتژی پروژه
+                    'status' => 'processing'
                 ]);
                 
                 return redirect()->route('order.success', $order);
             }
         }
 
-        // اگر پرداخت ناموفق بود یا کاربر لغو کرد
         $payment->update(['status' => 'failed']);
         return redirect()->route('payment.failed')->with('error', 'تراکنش ناموفق بود یا لغو شد.');
     }

@@ -33,7 +33,6 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 <div class="bg-[#12141c] border border-gray-800 rounded-xl p-5 space-y-6">
 
@@ -64,7 +63,6 @@
                             <span>🎫</span> <span>Support Tickets</span>
                         </a>
                         
-                        {{-- Safe Logout Form --}}
                         <a href="{{ route('logout') }}" 
                            onclick="event.preventDefault(); document.getElementById('logout-form').submit();"
                            class="flex items-center space-x-3 px-4 py-2.5 rounded-md text-red-400 hover:bg-red-500/10 transition pt-4 border-t border-gray-800/60 mt-4">
@@ -78,7 +76,6 @@
                 </div>
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-6">
 
                 <div>
@@ -94,7 +91,6 @@
 
                 <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
                     
-                    {{-- فرم ایجاد تیکت جدید --}}
                     <div class="xl:col-span-5 bg-[#12141c] border border-gray-800 rounded-lg p-5">
                         <h2 class="text-xs font-black uppercase tracking-wider text-white mb-4 pb-2 border-b border-gray-800">Initialize New Ticket</h2>
                         
@@ -135,7 +131,6 @@
                         </form>
                     </div>
 
-                    {{-- لیست تیکت‌های قبلی --}}
                     <div class="xl:col-span-7 bg-[#12141c] border border-gray-800 rounded-lg p-5">
                         <h2 class="text-xs font-black uppercase tracking-wider text-white mb-4 pb-2 border-b border-gray-800">Active Transmission Logs</h2>
 
@@ -194,7 +189,6 @@
                             </table>
                         </div>
 
-                        {{-- پجینیشن تیکت‌ها --}}
                         @if($tickets->hasPages())
                             <div class="mt-4 pt-3 border-t border-gray-800/40">
                                 {{ $tickets->links() }}

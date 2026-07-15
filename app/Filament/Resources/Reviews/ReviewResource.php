@@ -9,13 +9,14 @@ use App\Filament\Resources\Reviews\Schemas\ReviewForm;
 use App\Filament\Resources\Reviews\Tables\ReviewsTable;
 use App\Models\Review;
 use BackedEnum;
-use Filament\Resources\Resource;
+use App\Filament\Resources\BaseResource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
 
-class ReviewResource extends Resource
+class ReviewResource extends BaseResource
 {
+    protected static string $permissionPrefix = 'reviews';
     protected static ?string $model = Review::class;
 
     protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedRectangleStack;
@@ -44,5 +45,17 @@ class ReviewResource extends Resource
             'create' => CreateReview::route('/create'),
             'edit' => EditReview::route('/{record}/edit'),
         ];
+    }
+    public static function canViewAny(): bool
+    {
+        return auth()->user()->hasAnyRole(['super-admin', 'admin']);
+    }
+    public static function canDelete($record): bool
+    {
+        return auth()->user()->hasRole('super-admin');
+    }
+    public static function canEdit($record): bool
+    {
+        return auth()->user()->hasAnyRole(['super-admin', 'admin']);
     }
 }

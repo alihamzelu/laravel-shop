@@ -18,7 +18,6 @@
         
         <h1 class="text-3xl font-black uppercase tracking-tight text-white mb-8">Checkout</h1>
 
-        {{-- ✅ Messages --}}
         @if(session('error'))
             <div class="mb-4 p-3 bg-red-500/20 border border-red-500 text-red-400 rounded-lg text-sm">
                 {{ session('error') }}
@@ -27,10 +26,8 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
             
-            <!-- Left Side: Forms (2/3 Width) -->
             <div class="lg:col-span-2 space-y-6">
                 
-                {{-- ✅ Step 1: Shipping Information --}}
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-6">
                     <h2 class="text-lg font-bold text-white uppercase tracking-wider mb-6 flex items-center gap-2">
                         <span class="w-6 h-6 rounded-full bg-sky-500/10 text-sky-400 text-xs flex items-center justify-center font-bold border border-sky-500/20">1</span>
@@ -41,7 +38,6 @@
                         @csrf
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                            {{-- First Name --}}
                             <div>
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">First Name</label>
                                 <input type="text" name="first_name" value="{{ old('first_name') }}" placeholder="John"
@@ -52,7 +48,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Last Name --}}
                             <div>
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">Last Name</label>
                                 <input type="text" name="last_name" value="{{ old('last_name') }}" placeholder="Doe"
@@ -63,7 +58,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Email --}}
                             <div class="sm:col-span-2">
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">Email Address</label>
                                 <input type="email" name="email" value="{{ old('email', auth()->user()->email) }}" placeholder="johndoe@example.com"
@@ -74,7 +68,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Phone --}}
                             <div class="sm:col-span-2">
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">Phone Number</label>
                                 <input type="tel" name="phone" value="{{ old('phone') }}" placeholder="+1 (555) 123-4567"
@@ -85,7 +78,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Address --}}
                             <div class="sm:col-span-2">
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">Street Address</label>
                                 <input type="text" name="address" value="{{ old('address') }}" placeholder="123 Gaming Ave, Suite 404"
@@ -96,7 +88,6 @@
                                 @enderror
                             </div>
 
-                            {{-- City --}}
                             <div>
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">City</label>
                                 <input type="text" name="city" value="{{ old('city') }}" placeholder="Los Angeles"
@@ -107,7 +98,6 @@
                                 @enderror
                             </div>
 
-                            {{-- Postal Code --}}
                             <div>
                                 <label class="text-xs text-gray-400 font-semibold uppercase tracking-wider block mb-2">ZIP / Postal Code</label>
                                 <input type="text" name="postal_code" value="{{ old('postal_code') }}" placeholder="90001"
@@ -132,12 +122,10 @@
 
             </div>
 
-            <!-- Right Side: Order Summary Review (1/3 Width) -->
             <div class="lg:col-span-1">
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5 sticky top-24 space-y-6">
                     <h2 class="text-lg font-bold text-white uppercase tracking-wider border-b border-gray-800 pb-2">Review Order</h2>
                     
-                    {{-- ✅ Compact Items List (Dynamic) --}}
                     <div class="space-y-3 max-h-48 overflow-y-auto pr-1">
                         @forelse($cart->items ?? [] as $item)
                             <div class="flex items-center justify-between text-xs border-b border-gray-800 pb-3">
@@ -163,7 +151,6 @@
                         @endforelse
                     </div>
 
-                    {{-- ✅ Totals Tally (Dynamic) --}}
                     <div class="space-y-3 text-sm border-t border-gray-800 pt-4">
                         <div class="flex justify-between text-gray-400">
                             <span>Subtotal</span>
@@ -183,7 +170,6 @@
                         </div>
                     </div>
 
-                    {{-- Final Action Button --}}
                     <button form="checkout-form" class="w-full bg-sky-500 hover:bg-sky-600 text-black font-extrabold uppercase tracking-wider py-4 px-4 rounded-md shadow-lg shadow-sky-500/10 transition duration-300 flex justify-center items-center gap-2 text-sm">
                         🔒 Place Secure Order
                     </button>

@@ -15,7 +15,7 @@ class Payment extends Model
         'method',
         'status',
         'paid_at',
-        'authority',  // ✅ اضافه کن
+        'authority',
     ];
 
     protected $casts = [

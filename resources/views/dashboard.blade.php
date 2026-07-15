@@ -24,7 +24,7 @@
             <div class="flex items-center space-x-4">
                 <a href="{{ route('home') }}" class="text-xs text-gray-400 hover:text-white transition">Back to Store</a>
                 <div class="w-8 h-8 rounded-full bg-sky-500/20 border border-sky-500/50 flex items-center justify-center font-bold text-sky-400 text-sm">
-                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}        
+                    {{ strtoupper(substr(auth()->user()->name, 0, 2)) }}
                 </div>
             </div>
         </div>
@@ -33,12 +33,10 @@
     <main class="container mx-auto px-4 py-8">
         <div class="flex flex-col lg:flex-row gap-8">
 
-            {{-- Sidebar Aside --}}
             <aside class="w-full lg:w-1/4">
                 @include('components.dashboard-aside')
             </aside>
 
-            {{-- Main Content Area --}}
             <div class="w-full lg:w-3/4 space-y-6">
 
                 <div>
@@ -46,7 +44,6 @@
                     <p class="text-xs text-gray-500">Monitor your orders, hardware warranties, and profile status here.</p>
                 </div>
 
-                {{-- Stats Cards (اصلاح شده - فقط آمار سفارشات) --}}
                 <div class="w-full">
                     <div class="bg-[#12141c] border border-gray-800 p-5 rounded-lg max-w-sm">
                         <span class="text-xs text-gray-500 font-bold uppercase tracking-wider">Total Orders Placed</span>
@@ -54,11 +51,10 @@
                     </div>
                 </div>
 
-                {{-- Recent Orders Table --}}
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5">
                     <div class="flex justify-between items-center mb-4 pb-2 border-b border-gray-800">
                         <h2 class="text-sm font-black uppercase tracking-wider text-white">Recent Orders</h2>
-                        <a href="#" class="text-xs text-sky-400 hover:underline font-semibold">View All</a>
+                        <a href="{{ route('orders') }}" class="text-xs text-sky-400 hover:underline font-semibold">View All</a>
                     </div>
 
                     <div class="overflow-x-auto">
@@ -74,39 +70,42 @@
                             </thead>
                             <tbody class="text-gray-300 divide-y divide-gray-800/50">
                                 @forelse ($orders as $order)
-                                    <tr>
-                                        <td class="py-4 font-mono font-bold text-white">#{{ $order->id }}</td>
-                                        <td class="py-4">{{ $order->created_at->format('M d, Y') }}</td>
-                                        <td class="py-4 font-mono">${{ number_format($order->total_price, 2) }}</td>
-                                        <td class="py-4">
-                                            @if($order->status === 'success' || $order->status === 'paid' || $order->status === 'completed')
-                                                <span class="bg-green-500/10 text-green-400 font-bold px-2 py-0.5 rounded border border-green-500/20 uppercase tracking-wide text-[10px]">
-                                                    {{ $order->status }}
-                                                </span>
-                                            @elseif($order->status === 'pending')
-                                                <span class="bg-yellow-500/10 text-yellow-400 font-bold px-2 py-0.5 rounded border border-yellow-500/20 uppercase tracking-wide text-[10px]">
-                                                    {{ $order->status }}
-                                                </span>
-                                            @else
-                                                <span class="bg-red-500/10 text-red-400 font-bold px-2 py-0.5 rounded border border-red-500/20 uppercase tracking-wide text-[10px]">
-                                                    {{ $order->status }}
-                                                </span>
-                                            @endif
-                                        </td>
-                                        <td class="py-4 text-right">
-                                            @if($order->status === 'pending')
-                                                <a href="{{ route('payment.index', $order) }}" class="text-sky-400 hover:underline font-semibold">Pay Now</a>
-                                            @else
-                                                <button class="text-gray-500 hover:text-white transition font-semibold">Track</button>
-                                            @endif
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td class="py-4 font-mono font-bold text-white">#{{ $order->id }}</td>
+                                    <td class="py-4">{{ $order->created_at->format('M d, Y') }}</td>
+                                    <td class="py-4 font-mono">${{ number_format($order->total_price, 2) }}</td>
+                                    <td class="py-4">
+                                        @if($order->status === 'success' || $order->status === 'paid' || $order->status === 'completed')
+                                        <span class="bg-green-500/10 text-green-400 font-bold px-2 py-0.5 rounded border border-green-500/20 uppercase tracking-wide text-[10px]">
+                                            {{ $order->status }}
+                                        </span>
+                                        @elseif($order->status === 'pending')
+                                        <span class="bg-yellow-500/10 text-yellow-400 font-bold px-2 py-0.5 rounded border border-yellow-500/20 uppercase tracking-wide text-[10px]">
+                                            {{ $order->status }}
+                                        </span>
+                                        @else
+                                        <span class="bg-red-500/10 text-red-400 font-bold px-2 py-0.5 rounded border border-red-500/20 uppercase tracking-wide text-[10px]">
+                                            {{ $order->status }}
+                                        </span>
+                                        @endif
+                                    </td>
+                                    <td class="py-4 text-right">
+                                        @if($order->status === 'pending')
+                                        <a href="{{ route('payment.index', $order) }}" class="text-sky-400 hover:underline font-semibold">Pay Now</a>
+                                        @else
+                                        <a href="{{ route('orders.show' , $order) }}">
+                                            <button class="text-gray-500 hover:text-white transition font-semibold">Track</button>
+
+                                        </a>
+                                        @endif
+                                    </td>
+                                </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="5" class="py-8 text-center text-gray-500">
-                                            You haven't placed any orders yet.
-                                        </td>
-                                    </tr>
+                                <tr>
+                                    <td colspan="5" class="py-8 text-center text-gray-500">
+                                        You haven't placed any orders yet.
+                                    </td>
+                                </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -122,4 +121,5 @@
     </footer>
 
 </body>
+
 </html>

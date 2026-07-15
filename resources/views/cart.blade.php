@@ -18,7 +18,6 @@
         
         <h1 class="text-3xl font-black uppercase tracking-tight text-white mb-8 border-b border-gray-800 pb-4">Shopping Cart</h1>
 
-        {{-- ✅ Messages --}}
         @if(session('success'))
             <div class="mb-4 p-3 bg-green-500/20 border border-green-500 text-green-400 rounded-lg text-sm">
                 {{ session('success') }}
@@ -35,15 +34,12 @@
             
             <div class="w-full lg:w-2/3 space-y-4">
                 
-                {{-- ✅ Check if cart exists and has items --}}
                 @if($cart && $cart->items->count() > 0)
                     
-                    {{-- ✅ Loop through cart items --}}
                     @forelse($cart->items as $item)
                         <div class="bg-[#12141c] border border-gray-800 rounded-lg p-4 flex flex-col sm:flex-row items-center justify-between gap-4 hover:border-gray-700 transition">
                             
                             <div class="flex items-center space-x-4 w-full sm:w-auto">
-                                {{-- Product Image --}}
                                 <div class="bg-[#0b0c10] rounded p-2 flex items-center justify-center w-20 h-20 flex-shrink-0">
                                     @if($item->product->image)
                                         <img src="{{ asset('storage/'.$item->product->image) }}" alt="{{ $item->product->name }}" class="max-w-full max-h-full object-contain">
@@ -52,7 +48,6 @@
                                     @endif
                                 </div>
 
-                                {{-- Product Info --}}
                                 <div>
                                     @if($item->product->brand)
                                         <span class="text-[10px] uppercase font-bold text-sky-400 tracking-wider">{{ $item->product->brand->name }}</span>
@@ -68,7 +63,6 @@
                             
                             <div class="flex items-center justify-between sm:justify-end w-full sm:w-auto gap-8 border-t sm:border-t-0 border-gray-800 pt-3 sm:pt-0">
                                 
-                                {{-- ✅ Quantity Input with Form --}}
                                 <form action="{{ route('cart.update', $item) }}" method="POST" class="flex items-center">
                                     @csrf
                                     @method('PUT')
@@ -80,7 +74,6 @@
                                     </div>
                                 </form>
 
-                                {{-- Price --}}
                                 <div class="text-right">
                                     <div class="text-lg font-black text-sky-400">
                                         ${{ number_format($item->product->price * $item->quantity, 2) }}
@@ -90,7 +83,6 @@
                                     </div>
                                 </div>
 
-                                {{-- ✅ Delete Button with Form --}}
                                 <form action="{{ route('cart.remove', $item) }}" method="POST" onsubmit="return confirm('Remove this item?');">
                                     @csrf
                                     @method('DELETE')
@@ -108,7 +100,6 @@
                     @endforelse
 
                 @else
-                    {{-- ✅ Empty Cart --}}
                     <div class="bg-[#12141c] border border-gray-800 rounded-lg p-8 text-center">
                         <p class="text-gray-400 text-lg mb-4">Your cart is empty</p>
                         <a href="{{ route('products') }}" class="text-sky-400 hover:text-sky-300 font-semibold">← Continue Shopping</a>
@@ -122,7 +113,6 @@
                 </div>
             </div>
 
-            {{-- ✅ Order Summary (Dynamic) --}}
             <div class="w-full lg:w-1/4 flex-shrink-0">
                 <div class="bg-[#12141c] border border-gray-800 rounded-lg p-5 sticky top-24 space-y-6">
                     <h2 class="text-lg font-bold text-white uppercase tracking-wider border-b border-gray-800 pb-2">Order Summary</h2>
